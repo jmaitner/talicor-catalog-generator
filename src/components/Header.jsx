@@ -1,4 +1,31 @@
+import { useState } from 'react'
+
 export default function Header({ productCount, totalCount, searchQuery, onSearch, selectedTags, onClearAll }) {
+  const [printing, setPrinting] = useState(false)
+
+  const handlePrint = () => {
+    setPrinting(true)
+    let fired = false
+    const doPrint = () => {
+      if (fired) return
+      fired = true
+      setPrinting(false)
+      window.print()
+    }
+
+    // Wait for all unloaded images, fall back after 4 seconds
+    const imgs = Array.from(document.querySelectorAll('img')).filter(img => !img.complete)
+    if (!imgs.length) { doPrint(); return }
+
+    const fallback = setTimeout(doPrint, 4000)
+    let resolved = 0
+    imgs.forEach(img => {
+      const cb = () => { if (++resolved >= imgs.length) { clearTimeout(fallback); doPrint() } }
+      img.addEventListener('load', cb, { once: true })
+      img.addEventListener('error', cb, { once: true })
+    })
+  }
+
   return (
     <header className="no-print sticky top-0 z-50 shadow-md">
       {/* Brand bar */}
@@ -18,13 +45,23 @@ export default function Header({ productCount, totalCount, searchQuery, onSearch
         </div>
 
         <button
-          onClick={() => window.print()}
-          className="flex items-center gap-2 px-5 py-2 bg-[#FFB800] hover:bg-[#e6a600] text-[#0055B3] text-sm font-extrabold rounded-full transition-colors shadow-sm"
+          onClick={handlePrint}
+          disabled={printing}
+          className="flex items-center gap-2 px-5 py-2 bg-[#FFB800] hover:bg-[#e6a600] disabled:opacity-60 text-[#0055B3] text-sm font-extrabold rounded-full transition-colors shadow-sm"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          Print / Save PDF
+          {printing ? (
+            <>
+              <div className="w-4 h-4 border-2 border-[#0055B3] border-t-transparent rounded-full animate-spin" />
+              Preparing…
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              Print / Save PDF
+            </>
+          )}
         </button>
       </div>
 
