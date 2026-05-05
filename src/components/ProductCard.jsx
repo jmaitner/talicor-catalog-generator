@@ -53,28 +53,25 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-extrabold text-slate-900 leading-snug line-clamp-2">
+        <h3 className="text-sm font-extrabold text-slate-900 leading-snug">
           {product.name}
         </h3>
 
         {/* Description */}
         {product.description && (
-          <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 font-semibold">
+          <p className="text-xs text-slate-500 leading-relaxed font-semibold">
             {product.description}
           </p>
         )}
 
-        {/* Tags */}
+        {/* Tags — all of them */}
         {product.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-auto">
-            {product.tags.slice(0, 3).map((tag, i) => (
+            {product.tags.map((tag, i) => (
               <span key={tag} className={`text-xs px-2 py-0.5 rounded-full font-bold ${TAG_COLORS[i % TAG_COLORS.length]}`}>
                 {tag}
               </span>
             ))}
-            {product.tags.length > 3 && (
-              <span className="text-xs text-slate-400 font-bold">+{product.tags.length - 3}</span>
-            )}
           </div>
         )}
 
