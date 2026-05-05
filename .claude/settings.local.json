@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/jackson.maitner/Downloads/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(cp -r \"/c/Users/jackson.maitner/.claude/talicor-catalog/.\" \"/c/Users/jackson.maitner/.claude/Talicor Catalog Generation/\")",
+      "Bash(rm -rf \"/c/Users/jackson.maitner/.claude/talicor-catalog\")",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}
