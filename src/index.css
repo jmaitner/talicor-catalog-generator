@@ -64,7 +64,13 @@
     max-height: 200px !important;
   }
 
+  /* margin: 0 suppresses Chrome's built-in date/URL/page-number headers */
   @page {
-    margin: 0.5in;
+    margin: 0;
+  }
+
+  /* Replace page margin with body padding so content doesn't touch edges */
+  body {
+    padding: 0.5in !important;
   }
 }
