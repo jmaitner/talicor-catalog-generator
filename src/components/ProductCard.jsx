@@ -70,16 +70,25 @@ export default function ProductCard({ product, isSelected, onToggleSelect }) {
 
         {/* Description */}
         {product.description && (
-          <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 font-semibold">
+          <p className="card-description text-xs text-slate-500 leading-relaxed line-clamp-2 font-semibold">
             {product.description}
           </p>
         )}
 
+        {/* Bullet points */}
+        {product.bullet_points?.length > 0 && (
+          <ul className="card-bullets text-xs text-slate-500 font-semibold leading-relaxed space-y-0.5 pl-3 list-disc">
+            {product.bullet_points.map((b, i) => (
+              <li key={i}>{b}</li>
+            ))}
+          </ul>
+        )}
+
         {/* Tags */}
         {product.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-auto">
+          <div className="card-tags flex flex-wrap gap-1 mt-auto">
             {product.tags.map((tag, i) => (
-              <span key={tag} className={`text-xs px-2 py-0.5 rounded-full font-bold ${TAG_COLORS[i % TAG_COLORS.length]}`}>
+              <span key={`${tag}-${i}`} className={`text-xs px-2 py-0.5 rounded-full font-bold ${TAG_COLORS[i % TAG_COLORS.length]}`}>
                 {tag}
               </span>
             ))}
