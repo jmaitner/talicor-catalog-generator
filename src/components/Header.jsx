@@ -1,54 +1,59 @@
-export default function Header({ productCount, totalCount, searchQuery, onSearch, selectedTags, onClearAll, catalogRef }) {
-  const handlePrint = () => window.print()
-
+export default function Header({ productCount, totalCount, searchQuery, onSearch, selectedTags, onClearAll }) {
   return (
-    <header className="no-print bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-screen-2xl mx-auto px-6 py-4 flex items-center gap-4">
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">T</span>
-          </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900 leading-none">Talicor</h1>
-            <p className="text-xs text-slate-400 leading-none">Product Catalog</p>
-          </div>
+    <header className="no-print bg-white border-b border-slate-200 shadow-sm">
+      {/* Top brand bar */}
+      <div className="bg-slate-900 text-white px-8 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <div className="text-2xl font-bold tracking-widest uppercase">Talicor</div>
+          <div className="w-px h-5 bg-slate-600" />
+          <div className="text-xs tracking-widest uppercase text-slate-400">Product Catalog</div>
         </div>
+        <button
+          onClick={() => window.print()}
+          className="flex items-center gap-2 px-4 py-1.5 border border-slate-600 text-slate-300 text-xs tracking-wide uppercase hover:bg-slate-700 transition-colors rounded"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print / Save PDF
+        </button>
+      </div>
 
-        <div className="flex-1 max-w-md">
+      {/* Search + count bar */}
+      <div className="px-8 py-3 flex items-center gap-6">
+        <div className="relative flex-1 max-w-sm">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
           <input
             type="text"
-            placeholder="Search products or tags…"
+            placeholder="Search products…"
             value={searchQuery}
             onChange={e => onSearch(e.target.value)}
-            className="w-full px-4 py-2 text-sm border border-slate-200 rounded-lg bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
+            className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded bg-slate-50 focus:outline-none focus:ring-1 focus:ring-slate-400 focus:bg-white"
           />
         </div>
 
-        <div className="flex items-center gap-3 ml-auto">
-          <span className="text-sm text-slate-500">
-            <span className="font-semibold text-slate-800">{productCount}</span>
-            {productCount !== totalCount && <span> of {totalCount}</span>} products
-          </span>
-
-          {(selectedTags.size > 0 || searchQuery) && (
-            <button
-              onClick={onClearAll}
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-            >
-              Clear filters
-            </button>
-          )}
-
-          <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
-            Print / Save PDF
-          </button>
+        <div className="text-sm text-slate-500">
+          Showing <span className="font-semibold text-slate-800">{productCount}</span>
+          {productCount !== totalCount && <span> of {totalCount}</span>} items
         </div>
+
+        {(selectedTags.size > 0 || searchQuery) && (
+          <button onClick={onClearAll} className="text-xs text-slate-500 hover:text-slate-800 underline underline-offset-2">
+            Clear all filters
+          </button>
+        )}
+
+        {selectedTags.size > 0 && (
+          <div className="flex items-center gap-2 flex-wrap">
+            {[...selectedTags].map(tag => (
+              <span key={tag} className="text-xs bg-slate-800 text-white px-2.5 py-1 rounded-sm">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </header>
   )

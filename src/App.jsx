@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import TagFilter from './components/TagFilter'
 import ProductGrid from './components/ProductGrid'
 import Header from './components/Header'
@@ -8,7 +8,6 @@ export default function App() {
   const [selectedTags, setSelectedTags] = useState(new Set())
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
-  const catalogRef = useRef(null)
 
   useEffect(() => {
     fetch('/data/products.json')
@@ -49,7 +48,7 @@ export default function App() {
   const clearAll = () => { setSelectedTags(new Set()); setSearchQuery('') }
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-100 flex flex-col">
       <Header
         productCount={filtered.length}
         totalCount={products.length}
@@ -57,11 +56,11 @@ export default function App() {
         onSearch={setSearchQuery}
         selectedTags={selectedTags}
         onClearAll={clearAll}
-        catalogRef={catalogRef}
       />
 
-      <div className="flex gap-0 max-w-screen-2xl mx-auto">
-        <aside className="no-print w-72 shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-slate-200 p-5">
+      <div className="flex flex-1">
+        {/* Sidebar */}
+        <aside className="no-print w-64 shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-slate-200 px-4 py-5">
           <TagFilter
             allTags={allTags}
             selectedTags={selectedTags}
@@ -70,11 +69,24 @@ export default function App() {
           />
         </aside>
 
-        <main className="flex-1 p-6 overflow-y-auto" ref={catalogRef}>
+        {/* Catalog area */}
+        <main className="flex-1 overflow-auto">
+          {/* Catalog header strip */}
+          <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center gap-3 no-print">
+            <div className="w-1 h-4 bg-slate-900 rounded-full" />
+            <span className="text-xs font-bold tracking-widest uppercase text-slate-500">
+              {selectedTags.size > 0
+                ? [...selectedTags].join(' · ')
+                : 'All Products'}
+            </span>
+          </div>
+
           {loading ? (
-            <div className="flex items-center justify-center h-64 text-slate-400 text-lg">Loading products…</div>
+            <div className="flex items-center justify-center h-64 text-slate-400 text-sm">Loading catalog…</div>
           ) : (
-            <ProductGrid products={filtered} />
+            <div className="p-0">
+              <ProductGrid products={filtered} />
+            </div>
           )}
         </main>
       </div>
