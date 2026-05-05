@@ -2,7 +2,7 @@
 
 @layer base {
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Nunito', system-ui, sans-serif;
     background-color: #f1f5f9;
     margin: 0;
   }
@@ -15,4 +15,32 @@
 
 @media print {
   .no-print { display: none !important; }
+
+  body { background: white !important; }
+
+  /* Full-width catalog grid for print */
+  .print-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0 !important;
+    background: white !important;
+  }
+
+  /* Each card must not break across a page */
+  .print-card {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    border: 1px solid #e2e8f0 !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  .print-card img {
+    max-height: 180px !important;
+  }
+
+  /* Print header at top of every page */
+  @page {
+    margin: 0.6in 0.5in;
+  }
 }

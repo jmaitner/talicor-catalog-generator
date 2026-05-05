@@ -60,7 +60,7 @@ export default function App() {
 
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="no-print w-64 shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-slate-200 px-4 py-5">
+        <aside className="no-print w-64 shrink-0 sticky top-0 h-screen overflow-y-auto bg-white border-r border-slate-200 px-4 py-5 shadow-sm">
           <TagFilter
             allTags={allTags}
             selectedTags={selectedTags}
@@ -71,22 +71,21 @@ export default function App() {
 
         {/* Catalog area */}
         <main className="flex-1 overflow-auto">
-          {/* Catalog header strip */}
-          <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center gap-3 no-print">
-            <div className="w-1 h-4 bg-slate-900 rounded-full" />
-            <span className="text-xs font-bold tracking-widest uppercase text-slate-500">
-              {selectedTags.size > 0
-                ? [...selectedTags].join(' · ')
-                : 'All Products'}
+          {/* Section label */}
+          <div className="no-print bg-white border-b border-slate-200 px-6 py-3 flex items-center gap-3">
+            <div className="w-1.5 h-5 bg-[#FFB800] rounded-full" />
+            <span className="text-xs font-extrabold tracking-widest uppercase text-slate-500">
+              {selectedTags.size > 0 ? [...selectedTags].join(' · ') : 'All Products'}
             </span>
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center h-64 text-slate-400 text-sm">Loading catalog…</div>
-          ) : (
-            <div className="p-0">
-              <ProductGrid products={filtered} />
+            <div className="flex flex-col items-center justify-center h-64 text-slate-400">
+              <div className="w-8 h-8 border-4 border-[#0055B3] border-t-[#FFB800] rounded-full animate-spin mb-3" />
+              <p className="text-sm font-bold">Loading catalog…</p>
             </div>
+          ) : (
+            <ProductGrid products={filtered} />
           )}
         </main>
       </div>
