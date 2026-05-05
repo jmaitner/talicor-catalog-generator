@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard'
 
-export default function ProductGrid({ products }) {
+export default function ProductGrid({ products, selectedIds, onToggleSelect }) {
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-64 text-slate-400 border-2 border-dashed border-slate-200 rounded-2xl bg-white m-6">
@@ -15,7 +15,14 @@ export default function ProductGrid({ products }) {
 
   return (
     <div className="print-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-5">
-      {products.map(p => <ProductCard key={p.id} product={p} />)}
+      {products.map(p => (
+        <ProductCard
+          key={p.id}
+          product={p}
+          isSelected={selectedIds?.has(p.id)}
+          onToggleSelect={onToggleSelect}
+        />
+      ))}
     </div>
   )
 }

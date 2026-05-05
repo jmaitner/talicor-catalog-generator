@@ -1,16 +1,18 @@
 import { useState } from 'react'
 
-export default function Header({ productCount, totalCount, searchQuery, onSearch, selectedTags, onClearAll }) {
+export default function Header({ productCount, totalCount, searchQuery, onSearch, selectedTags, onClearAll, selectedIds, onClearSelection }) {
   const [printing, setPrinting] = useState(false)
 
-  const handlePrint = () => {
+  const handlePrint = (selectedOnly = false) => {
     setPrinting(true)
+    if (selectedOnly) document.body.setAttribute('data-print-selected', '')
     let fired = false
     const doPrint = () => {
       if (fired) return
       fired = true
       setPrinting(false)
       window.print()
+      document.body.removeAttribute('data-print-selected')
     }
 
     // Wait for all unloaded images, fall back after 4 seconds
@@ -45,7 +47,7 @@ export default function Header({ productCount, totalCount, searchQuery, onSearch
         </div>
 
         <button
-          onClick={handlePrint}
+          onClick={() => handlePrint(false)}
           disabled={printing}
           className="flex items-center gap-2 px-5 py-2 bg-[#FFB800] hover:bg-[#e6a600] disabled:opacity-60 text-[#0055B3] text-sm font-extrabold rounded-full transition-colors shadow-sm"
         >
@@ -63,6 +65,18 @@ export default function Header({ productCount, totalCount, searchQuery, onSearch
             </>
           )}
         </button>
+        {selectedIds?.size > 0 && (
+          <button
+            onClick={() => handlePrint(true)}
+            disabled={printing}
+            className="flex items-center gap-2 px-5 py-2 bg-white hover:bg-slate-100 disabled:opacity-60 text-[#0055B3] text-sm font-extrabold rounded-full transition-colors shadow-sm border-2 border-white"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Print Selected ({selectedIds.size})
+          </button>
+        )}
       </div>
 
       {/* Search + filter bar */}

@@ -12,7 +12,7 @@ const TAG_COLORS = [
   'bg-purple-100 text-purple-700',
 ]
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, isSelected, onToggleSelect }) {
   const [imgError, setImgError] = useState(false)
   const imgSrc = !imgError && product.image_urls.length > 0 ? product.image_urls[0] : PLACEHOLDER
 
@@ -25,10 +25,21 @@ export default function ProductCard({ product }) {
     : null
 
   return (
-    <div className="print-card bg-white rounded-xl border border-slate-200 flex flex-row overflow-hidden group hover:shadow-lg transition-all duration-200">
+    <div className={`print-card${isSelected ? ' catalog-selected' : ''} bg-white rounded-xl border flex flex-row overflow-hidden group hover:shadow-lg transition-all duration-200 ${isSelected ? 'border-[#0055B3] ring-2 ring-[#0055B3]/30' : 'border-slate-200'}`}>
 
       {/* Image — left side */}
-      <div className="card-image w-36 shrink-0 bg-gradient-to-br from-blue-50 to-slate-50 relative flex items-center justify-center overflow-hidden border-r border-slate-100">
+      <div className="card-image w-36 shrink-0 bg-gradient-to-br from-blue-50 to-slate-50 relative flex items-center justify-center overflow-hidden border-r border-slate-100" onClick={onToggleSelect ? () => onToggleSelect(product.id) : undefined} style={onToggleSelect ? { cursor: 'pointer' } : {}}>
+        {/* Selection checkbox */}
+        <button
+          onClick={e => { e.stopPropagation(); onToggleSelect && onToggleSelect(product.id) }}
+          className={`no-print absolute top-2 left-2 z-10 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${isSelected ? 'bg-[#0055B3] border-[#0055B3]' : 'bg-white/80 border-slate-300 hover:border-[#0055B3]'}`}
+        >
+          {isSelected && (
+            <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+            </svg>
+          )}
+        </button>
         <img
           src={imgSrc}
           alt={product.name}
@@ -67,14 +78,11 @@ export default function ProductCard({ product }) {
         {/* Tags */}
         {product.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-auto">
-            {product.tags.slice(0, 3).map((tag, i) => (
+            {product.tags.map((tag, i) => (
               <span key={tag} className={`text-xs px-2 py-0.5 rounded-full font-bold ${TAG_COLORS[i % TAG_COLORS.length]}`}>
                 {tag}
               </span>
             ))}
-            {product.tags.length > 3 && (
-              <span className="text-xs text-slate-400 font-bold">+{product.tags.length - 3}</span>
-            )}
           </div>
         )}
 
