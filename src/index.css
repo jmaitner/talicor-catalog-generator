@@ -33,16 +33,16 @@
 
   body { background: white !important; }
 
-  /* Full-width 3-column grid */
+  /* Single-column, 3 per page */
   .print-grid {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
     padding: 0 !important;
     background: white !important;
   }
 
-  /* Each card: no break, no shadow, horizontal layout preserved */
+  /* Each card: no break, larger image for full-width layout */
   .print-card {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
@@ -50,16 +50,18 @@
     border: 1px solid #e2e8f0 !important;
     border-radius: 8px !important;
     overflow: hidden !important;
+    min-height: 0 !important;
   }
 
+  /* Wider image area when card is full page width */
   .print-card .card-image {
-    width: 120px !important;
-    min-width: 120px !important;
+    width: 220px !important;
+    min-width: 220px !important;
     flex-shrink: 0 !important;
   }
 
   .print-card .card-image img {
-    max-height: 140px !important;
+    max-height: 200px !important;
   }
 
   @page {
