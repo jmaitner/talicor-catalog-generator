@@ -49,6 +49,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
+      {/* Print-only logo header — hidden on screen, shown when printing */}
+      <div id="print-logo-header" className="hidden items-center justify-between pb-4 mb-4 border-b-2 border-slate-200 px-2">
+        <img
+          src="https://talicor.com/wp-content/uploads/2018/06/talicor_logo_4C_CS2_1-400x.png"
+          alt="Talicor"
+          className="h-14 object-contain"
+        />
+        <div className="text-right">
+          <div className="text-sm font-extrabold tracking-widest uppercase text-slate-600">Product Catalog</div>
+          {selectedTags.size > 0 && (
+            <div className="text-xs text-slate-400 font-semibold mt-0.5">{[...selectedTags].join(' · ')}</div>
+          )}
+          <div className="text-xs text-slate-400 font-semibold">{filtered.length} items</div>
+        </div>
+      </div>
+
       <Header
         productCount={filtered.length}
         totalCount={products.length}

@@ -13,34 +13,56 @@
   }
 }
 
+/* ── Print styles ─────────────────────────────── */
 @media print {
+  /* Hide interactive chrome */
   .no-print { display: none !important; }
+
+  /* Show the print-only logo header */
+  #print-logo-header { display: flex !important; }
+
+  /* Kill all scrollbars / overflow clipping */
+  html, body, main, aside, #root, .flex-1 {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Static positioning so sticky header doesn't repeat */
+  header { position: static !important; box-shadow: none !important; }
 
   body { background: white !important; }
 
-  /* Full-width catalog grid for print */
+  /* Full-width 3-column grid */
   .print-grid {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0 !important;
+    gap: 10px !important;
+    padding: 0 !important;
     background: white !important;
   }
 
-  /* Each card must not break across a page */
+  /* Each card: no break, no shadow, horizontal layout preserved */
   .print-card {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    border: 1px solid #e2e8f0 !important;
-    background: white !important;
     box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
   }
 
-  .print-card img {
-    max-height: 180px !important;
+  .print-card .card-image {
+    width: 120px !important;
+    min-width: 120px !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Print header at top of every page */
+  .print-card .card-image img {
+    max-height: 140px !important;
+  }
+
   @page {
-    margin: 0.6in 0.5in;
+    margin: 0.5in;
   }
 }

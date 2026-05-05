@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f0f7ff'/%3E%3Crect x='150' y='130' width='100' height='100' rx='8' fill='%23dbeafe'/%3E%3Ccircle cx='175' cy='155' r='14' fill='%2393c5fd'/%3E%3Cpath d='M150 230 L180 190 L205 215 L230 188 L250 230Z' fill='%2393c5fd'/%3E%3Ctext x='200' y='278' text-anchor='middle' font-size='12' fill='%2360a5fa' font-family='system-ui' font-weight='700'%3ENo Image Yet%3C/text%3E%3C/svg%3E"
+const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23f0f7ff'/%3E%3Crect x='100' y='90' width='100' height='100' rx='8' fill='%23dbeafe'/%3E%3Ccircle cx='125' cy='115' r='14' fill='%2393c5fd'/%3E%3Cpath d='M100 190 L130 150 L155 175 L180 148 L200 190Z' fill='%2393c5fd'/%3E%3Ctext x='150' y='228' text-anchor='middle' font-size='11' fill='%2360a5fa' font-family='system-ui' font-weight='700'%3ENo Image Yet%3C/text%3E%3C/svg%3E"
+
+const LOGO = "https://talicor.com/wp-content/uploads/2018/06/talicor_logo_4C_CS2_1-400x.png"
 
 const TAG_COLORS = [
   'bg-blue-100 text-blue-700',
@@ -23,32 +25,35 @@ export default function ProductCard({ product }) {
     : null
 
   return (
-    <div className="print-card bg-white rounded-2xl border border-slate-200 flex flex-col group hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
-      {/* Image */}
-      <div className="relative bg-gradient-to-br from-blue-50 to-slate-50 overflow-hidden" style={{ aspectRatio: '1' }}>
+    <div className="print-card bg-white rounded-xl border border-slate-200 flex flex-row overflow-hidden group hover:shadow-lg transition-all duration-200">
+
+      {/* Image — left side */}
+      <div className="card-image w-36 shrink-0 bg-gradient-to-br from-blue-50 to-slate-50 relative flex items-center justify-center overflow-hidden border-r border-slate-100">
         <img
           src={imgSrc}
           alt={product.name}
           onError={() => setImgError(true)}
-          className="w-full h-full object-contain p-5 group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+          style={{ maxHeight: '160px' }}
         />
         {ageLabel && (
-          <span className="absolute top-2.5 right-2.5 bg-[#FFB800] text-[#0055B3] text-xs px-2.5 py-1 rounded-full font-extrabold shadow-sm">
+          <span className="absolute bottom-2 left-0 right-0 mx-auto w-fit bg-[#FFB800] text-[#0055B3] text-xs px-2 py-0.5 rounded-full font-extrabold text-center shadow-sm">
             {ageLabel}
           </span>
         )}
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-4 gap-2.5">
-        {/* Brand + SKU */}
+      {/* Details — right side */}
+      <div className="flex flex-col flex-1 p-3 gap-1.5 min-w-0">
+
+        {/* Logo + SKU */}
         <div className="flex items-center justify-between gap-1">
-          <span className="text-xs font-extrabold tracking-widest uppercase text-[#0055B3]">{product.brand}</span>
-          <span className="text-xs text-slate-400 font-semibold font-mono">#{product.id}</span>
+          <img src={LOGO} alt="Talicor" className="h-5 object-contain object-left" />
+          <span className="text-xs text-slate-400 font-semibold font-mono shrink-0">#{product.id}</span>
         </div>
 
         {/* Name */}
-        <h3 className="text-sm font-extrabold text-slate-900 leading-snug line-clamp-3">
+        <h3 className="text-sm font-extrabold text-slate-900 leading-snug line-clamp-2">
           {product.name}
         </h3>
 
@@ -61,33 +66,34 @@ export default function ProductCard({ product }) {
 
         {/* Tags */}
         {product.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-auto pt-1">
-            {product.tags.slice(0, 4).map((tag, i) => (
+          <div className="flex flex-wrap gap-1 mt-auto">
+            {product.tags.slice(0, 3).map((tag, i) => (
               <span key={tag} className={`text-xs px-2 py-0.5 rounded-full font-bold ${TAG_COLORS[i % TAG_COLORS.length]}`}>
                 {tag}
               </span>
             ))}
-            {product.tags.length > 4 && (
-              <span className="text-xs text-slate-400 font-bold px-1">+{product.tags.length - 4}</span>
+            {product.tags.length > 3 && (
+              <span className="text-xs text-slate-400 font-bold">+{product.tags.length - 3}</span>
             )}
           </div>
         )}
 
         {/* Pricing */}
-        <div className="flex items-end justify-between pt-3 border-t border-slate-100 mt-auto">
+        <div className="flex items-end justify-between pt-2 border-t border-slate-100 mt-auto">
           {msrp ? (
             <div>
-              <div className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-0.5">MSRP</div>
-              <div className="text-xl font-extrabold text-[#0055B3]">{msrp}</div>
+              <div className="text-xs text-slate-400 font-bold uppercase tracking-wide leading-none mb-0.5">MSRP</div>
+              <div className="text-lg font-extrabold text-[#0055B3] leading-none">{msrp}</div>
             </div>
           ) : <div />}
           {wholesale && (
             <div className="text-right">
-              <div className="text-xs text-slate-400 font-bold uppercase tracking-wide mb-0.5">Wholesale</div>
-              <div className="text-sm font-extrabold text-slate-600">{wholesale}</div>
+              <div className="text-xs text-slate-400 font-bold uppercase tracking-wide leading-none mb-0.5">Wholesale</div>
+              <div className="text-sm font-extrabold text-slate-600 leading-none">{wholesale}</div>
             </div>
           )}
         </div>
+
       </div>
     </div>
   )
